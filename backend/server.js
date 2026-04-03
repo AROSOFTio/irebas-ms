@@ -35,6 +35,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 app.use('/api/security', require('./routes/securityRoutes'));
 app.use('/api/incidents', require('./routes/incidentRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/audit-logs', require('./routes/auditRoutes'));
 
 // Basic health route
 app.get('/api/health', (req, res) => {

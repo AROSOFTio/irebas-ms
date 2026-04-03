@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import SecurityEvents from './pages/SecurityEvents';
 import Alerts from './pages/Alerts';
 import Incidents from './pages/Incidents';
+import AuditLogs from './pages/AuditLogs';
+import Users from './pages/Users';
 
 function App() {
   return (
@@ -23,9 +25,9 @@ function App() {
               <Route path="/events" element={<SecurityEvents />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/incidents" element={<Incidents />} />
-              <Route path="/audit-logs" element={<div className="p-6 h-full font-semibold text-2xl">Audit Logs (Coming Soon)</div>} />
+              <Route path="/audit-logs" element={<AuditLogs />} />
+              <Route path="/users" element={<Users />} />
               <Route path="/reports" element={<div className="p-6 h-full font-semibold text-2xl">Reports (Coming Soon)</div>} />
-              <Route path="/users" element={<div className="p-6 h-full font-semibold text-2xl">Users (Coming Soon)</div>} />
               <Route path="/settings" element={<div className="p-6 h-full font-semibold text-2xl">Settings (Coming Soon)</div>} />
             </Route>
           </Route>
