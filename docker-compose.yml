@@ -10,8 +10,7 @@ services:
       MYSQL_DATABASE: irebas
       MYSQL_USER: irebas_user
       MYSQL_PASSWORD: irebas_password
-    ports:
-      - "3306:3306"
+    # Removed port 3306 binding to prevent collision with aaPanel's local MySQL
     volumes:
       - db_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -26,7 +25,7 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
-      - "8080:80"
+      - "8081:80" # Exposed on port 8081 to avoid conflict with aaPanel
     networks:
       - irebas_network
     depends_on:
@@ -38,7 +37,7 @@ services:
     container_name: irebas_backend
     restart: always
     ports:
-      - "5000:5000"
+      - "5005:5000" # Mapped to 5005 on host
     environment:
       DB_HOST: db
       DB_USER: irebas_user
@@ -57,7 +56,7 @@ services:
     container_name: irebas_frontend
     restart: always
     ports:
-      - "80:80"
+      - "3005:80" # Mapped port 80 inside container to 3005 on the host server
     networks:
       - irebas_network
     depends_on:
