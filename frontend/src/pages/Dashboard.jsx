@@ -1,23 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldAlert, AlertTriangle, Activity, CheckCircle, Bell } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-const data = [
-    { name: 'Mon', alerts: 12, incidents: 2 },
-    { name: 'Tue', alerts: 19, incidents: 4 },
-    { name: 'Wed', alerts: 5, incidents: 1 },
-    { name: 'Thu', alerts: 14, incidents: 3 },
-    { name: 'Fri', alerts: 22, incidents: 6 },
-    { name: 'Sat', alerts: 7, incidents: 0 },
-    { name: 'Sun', alerts: 4, incidents: 0 },
-];
+import axios from 'axios';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
         <div className="flex justify-between items-start">
             <div>
                 <p className="text-sm font-medium text-gray-500 mb-1">{title}</p>
-                <h3 className="text-3xl font-bold text-gray-800">{value}</h3>
+                <h3 className="text-3xl font-bold text-gray-800">{value !== null ? value : '...'}</h3>
             </div>
             <div className={`p-3 rounded-lg ${color}`}>
                 <Icon className="w-6 h-6 text-white" />
@@ -31,9 +22,46 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
 );
 
 const Dashboard = () => {
+    const [stats, setStats] = useState({
+        totalAlarms: null,
+        criticalAlerts: null,
+        failedLogins: null,
+        resolvedIncidents: null
+    });
+    const [chartData, setChartData] = useState([]);
+    const [recentAlerts, setRecentAlerts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const res = await axios.get('/api/dashboard/stats');
+                setStats(res.data.stats);
+                setChartData(res.data.chartData);
+                setRecentAlerts(res.data.recentAlerts);
+            } catch (error) {
+                console.error("Failed to fetch dashboard data", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
+    const severityColor = (sev) => {
+        switch(sev?.toUpperCase()) {
+            case 'CRITICAL': return 'bg-red-100 text-accentRed';
+            case 'HIGH': return 'bg-orange-100 text-orange-800';
+            case 'MEDIUM': return 'bg-yellow-100 text-yellow-800';
+            case 'LOW': return 'bg-blue-100 text-primeBlue';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Security Dashboard</h1>
                     <p className="text-sm text-gray-500 mt-1">Real-time overview of system security status.</p>
@@ -46,10 +74,10 @@ const Dashboard = () => {
 
             {/* Stat Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Total Alarms" value="234" icon={Bell} color="bg-primeBlue" trend="+12%" />
-                <StatCard title="Critical Alerts" value="18" icon={AlertTriangle} color="bg-accentRed" trend="-5%" />
-                <StatCard title="Failed Logins" value="45" icon={ShieldAlert} color="bg-orange-500" trend="+20%" />
-                <StatCard title="Resolved Incidents" value="112" icon={CheckCircle} color="bg-emerald-500" trend="+2%" />
+                <StatCard title="Total Alarms" value={stats.totalAlarms} icon={Bell} color="bg-primeBlue" trend="+12%" />
+                <StatCard title="Critical Alerts" value={stats.criticalAlerts} icon={AlertTriangle} color="bg-accentRed" trend="-5%" />
+                <StatCard title="Failed Logins" value={stats.failedLogins} icon={ShieldAlert} color="bg-orange-500" trend="+20%" />
+                <StatCard title="Resolved Incidents" value={stats.resolvedIncidents} icon={CheckCircle} color="bg-emerald-500" trend="+2%" />
             </div>
 
             {/* Main Content Area */}
@@ -58,16 +86,20 @@ const Dashboard = () => {
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 lg:col-span-2">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Security Events Overview</h3>
                     <div className="h-72">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6B7280'}} />
-                                <YAxis axisLine={false} tickLine={false} tick={{fill: '#6B7280'}} />
-                                <Tooltip cursor={{fill: '#F3F4F6'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}} />
-                                <Bar dataKey="alerts" fill="#1455c6" radius={[4, 4, 0, 0]} name="Alerts" />
-                                <Bar dataKey="incidents" fill="#b12917" radius={[4, 4, 0, 0]} name="Incidents" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        {loading && chartData.length === 0 ? (
+                            <div className="flex h-full items-center justify-center text-gray-400">Loading chart...</div>
+                        ) : (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6B7280'}} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#6B7280'}} />
+                                    <Tooltip cursor={{fill: '#F3F4F6'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}} />
+                                    <Bar dataKey="alerts" fill="#1455c6" radius={[4, 4, 0, 0]} name="Alerts" />
+                                    <Bar dataKey="incidents" fill="#b12917" radius={[4, 4, 0, 0]} name="Incidents" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        )}
                     </div>
                 </div>
 
@@ -78,16 +110,21 @@ const Dashboard = () => {
                         <a href="/alerts" className="text-sm font-medium text-primeBlue hover:underline">View all</a>
                     </div>
                     <div className="space-y-4">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        {recentAlerts.length === 0 && !loading && (
+                            <div className="text-sm text-gray-500">No recent alerts found.</div>
+                        )}
+                        {recentAlerts.slice(0,4).map((alert) => (
+                            <div key={alert.id} className="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-100">
                                 <div className="mt-0.5 bg-red-100 p-2 rounded-full mr-3">
                                     <AlertTriangle className="w-4 h-4 text-accentRed" />
                                 </div>
                                 <div className="flex-1">
-                                    <h4 className="text-sm font-medium text-gray-900">Multiple failed logins</h4>
-                                    <p className="text-xs text-gray-500 mt-1">IP: 192.168.1.{100 + i}</p>
+                                    <h4 className="text-sm font-medium text-gray-900 truncate" title={alert.title}>{alert.title}</h4>
+                                    <p className="text-xs text-gray-500 mt-1">Status: {alert.status}</p>
                                 </div>
-                                <span className="text-xs text-gray-400 font-medium">10 min ago</span>
+                                <span className="text-xs text-gray-400 font-medium whitespace-nowrap ml-2">
+                                    {new Date(alert.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                </span>
                             </div>
                         ))}
                     </div>
@@ -97,7 +134,7 @@ const Dashboard = () => {
             {/* Recent Alerts Table placeholder */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-6">
                 <div className="px-6 py-5 border-b border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800">Latest Active Incidents</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">Latest Active Alerts</h3>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -112,25 +149,25 @@ const Dashboard = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {[
-                                { id: 'INC-1024', title: 'Suspicious overseas login', severity: 'High', status: 'Open' },
-                                { id: 'INC-1023', title: 'Brute force attempt detected', severity: 'Critical', status: 'In Progress' },
-                                { id: 'INC-1022', title: 'Unauthorized file access', severity: 'Medium', status: 'Open' },
-                            ].map((row, idx) => (
-                                <tr key={idx} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primeBlue">{row.id}</td>
+                            {recentAlerts.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">No data available</td>
+                                </tr>
+                            ) : recentAlerts.map((row) => (
+                                <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primeBlue">ALT-{row.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.title}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-accentRed`}>
+                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${severityColor(row.severity)}`}>
                                             {row.severity}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800`}>
-                                            {row.status}
-                                        </span>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                        {row.status}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 10:45 AM</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {new Date(row.created_at).toLocaleString()}
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button className="text-primeBlue hover:text-primeBlueHover">Review</button>
                                     </td>

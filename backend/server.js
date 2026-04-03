@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-const mysql = require('mysql2/promise');
+const pool = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -12,17 +12,6 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: { origin: '*' }
-});
-
-// Database Connection
-const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'irebas_user',
-    password: process.env.DB_PASSWORD || 'irebas_password',
-    database: process.env.DB_NAME || 'irebas',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
 });
 
 // Check DB Connection
@@ -35,7 +24,11 @@ pool.getConnection()
         console.error("Error connecting to database:", err);
     });
 
-// Basic route
+// API Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+
+// Basic health route
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'IREBAS Backend is running' });
 });

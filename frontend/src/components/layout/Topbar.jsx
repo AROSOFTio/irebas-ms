@@ -1,7 +1,11 @@
-import React from 'react';
-import { Menu, Search, UserCircle, BellRing } from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { Menu, Search, UserCircle, BellRing, LogOut } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
 const Topbar = ({ toggleSidebar }) => {
+    const { user, logout } = useContext(AuthContext);
+    const [showDropdown, setShowDropdown] = useState(false);
+
     return (
         <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 sticky top-0 shadow-sm">
             <div className="flex items-center">
@@ -35,12 +39,29 @@ const Topbar = ({ toggleSidebar }) => {
                     <span className="absolute top-1 right-1 block w-2.5 h-2.5 bg-accentRed rounded-full shadow-solid"></span>
                 </button>
 
-                <div className="flex items-center gap-2 cursor-pointer border-l pl-4 border-gray-200">
-                    <UserCircle className="h-8 w-8 text-gray-400" />
-                    <div className="hidden sm:block text-sm">
-                        <p className="font-medium text-gray-700">Admin User</p>
-                        <p className="text-xs text-gray-500">Security Analyst</p>
+                <div className="relative border-l pl-4 border-gray-200">
+                    <div 
+                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition" 
+                        onClick={() => setShowDropdown(!showDropdown)}
+                    >
+                        <UserCircle className="h-8 w-8 text-gray-400" />
+                        <div className="hidden sm:block text-sm text-left">
+                            <p className="font-medium text-gray-700 capitalize">{user?.username || 'Loading...'}</p>
+                            <p className="text-xs text-gray-500">{user?.role_name || user?.role || 'Guest'}</p>
+                        </div>
                     </div>
+                    
+                    {showDropdown && (
+                        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5">
+                            <button 
+                                onClick={logout}
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                            >
+                                <LogOut className="w-4 h-4 mr-2" />
+                                Sign out
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
