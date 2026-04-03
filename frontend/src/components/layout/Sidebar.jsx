@@ -33,9 +33,11 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
             )}
 
             <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0a2355] text-white transform transition-transform duration-300 ease-in-out flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} `}>
-                <div className="flex items-center justify-center py-6 px-4 border-b border-white/10 shrink-0">
-                    <ShieldAlert className="h-8 w-8 text-white mr-3" />
-                    <span className="text-xl font-bold tracking-wide">IREBAS</span>
+                <div className="flex flex-col items-center justify-center py-6 px-4 border-b border-white/10 shrink-0">
+                    <div className="bg-white p-2 rounded-xl w-full flex justify-center mb-2 shadow-sm">
+                        <img src="/logo.png" alt="Centenary Bank" className="h-10 object-contain" />
+                    </div>
+                    <span className="text-xs font-semibold tracking-wider text-gray-400 mt-2">SECURITY SYSTEM</span>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">

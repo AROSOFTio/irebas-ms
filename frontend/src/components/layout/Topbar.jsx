@@ -16,8 +16,9 @@ const Topbar = ({ toggleSidebar }) => {
                     <span className="sr-only">Open sidebar</span>
                     <Menu className="h-6 w-6" />
                 </button>
-                <div className="hidden sm:block text-xl font-semibold text-gray-800">
-                    Centenary Bank Security Monitor
+                <div className="hidden sm:flex items-center gap-3">
+                    <img src="/logo.png" alt="Centenary Logo" className="h-8 object-contain" />
+                    <span className="text-lg font-semibold text-gray-800 border-l border-gray-300 pl-3">Security Monitor</span>
                 </div>
             </div>
             
