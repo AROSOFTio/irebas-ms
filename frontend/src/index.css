@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply bg-primeBlue text-white px-4 py-2 rounded-md font-medium hover:bg-primeBlueHover transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primeBlue;
+  }
+  .btn-danger {
+    @apply bg-accentRed text-white px-4 py-2 rounded-md font-medium hover:bg-accentRedHover transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-accentRed;
+  }
+}
