@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-    LayoutDashboard, 
-    ShieldAlert, 
-    Bell, 
-    AlertTriangle, 
-    FileText, 
-    BarChart3, 
-    Users, 
-    Settings 
+import {
+    LayoutDashboard,
+    ShieldAlert,
+    Bell,
+    AlertTriangle,
+    FileText,
+    BarChart3,
+    Users,
+    Settings
 } from 'lucide-react';
 
 const navItems = [
@@ -26,7 +26,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     return (
         <>
             {isOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />

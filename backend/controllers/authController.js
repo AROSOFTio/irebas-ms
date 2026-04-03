@@ -1,5 +1,5 @@
 const pool = require('../db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res) => {
@@ -9,7 +9,7 @@ exports.login = async (req, res) => {
             `SELECT u.*, r.name as role_name 
              FROM users u 
              LEFT JOIN roles r ON u.role_id = r.id 
-             WHERE u.username = ?`, 
+             WHERE u.username = ?`,
             [username]
         );
 
@@ -45,7 +45,7 @@ exports.getMe = async (req, res) => {
             `SELECT u.id, u.username, r.name as role_name 
              FROM users u 
              LEFT JOIN roles r ON u.role_id = r.id 
-             WHERE u.id = ?`, 
+             WHERE u.id = ?`,
             [req.user.id]
         );
 
