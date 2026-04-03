@@ -24,9 +24,17 @@ pool.getConnection()
         console.error("Error connecting to database:", err);
     });
 
+// Make io accessible to our router
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/api/security', require('./routes/securityRoutes'));
+app.use('/api/incidents', require('./routes/incidentRoutes'));
 
 // Basic health route
 app.get('/api/health', (req, res) => {

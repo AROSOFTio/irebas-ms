@@ -4,6 +4,9 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import MainLayout from './components/layout/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import SecurityEvents from './pages/SecurityEvents';
+import Alerts from './pages/Alerts';
+import Incidents from './pages/Incidents';
 
 function App() {
   return (
@@ -17,9 +20,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/events" element={<div className="p-6 h-full font-semibold text-2xl">Security Events (Coming Soon)</div>} />
-              <Route path="/alerts" element={<div className="p-6 h-full font-semibold text-2xl">Alerts (Coming Soon)</div>} />
-              <Route path="/incidents" element={<div className="p-6 h-full font-semibold text-2xl">Incidents (Coming Soon)</div>} />
+              <Route path="/events" element={<SecurityEvents />} />
+              <Route path="/alerts" element={<Alerts />} />
+              <Route path="/incidents" element={<Incidents />} />
               <Route path="/audit-logs" element={<div className="p-6 h-full font-semibold text-2xl">Audit Logs (Coming Soon)</div>} />
               <Route path="/reports" element={<div className="p-6 h-full font-semibold text-2xl">Reports (Coming Soon)</div>} />
               <Route path="/users" element={<div className="p-6 h-full font-semibold text-2xl">Users (Coming Soon)</div>} />
