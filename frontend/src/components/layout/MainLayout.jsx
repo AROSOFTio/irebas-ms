@@ -50,11 +50,15 @@ const MainLayout = () => {
                 ))}
             </div>
 
-            <Sidebar isOpen={isSidebarOpen} setSidebarOpen={setIsSidebarOpen} />
+            <div className="print:hidden">
+                <Sidebar isOpen={isSidebarOpen} setSidebarOpen={setIsSidebarOpen} />
+            </div>
             
-            <div className="flex flex-col flex-1 w-0 lg:ml-64 transition-all duration-300">
-                <Topbar toggleSidebar={toggleSidebar} />
-                <main className="flex-1 relative overflow-y-auto focus:outline-none bg-lightBlueBg/30">
+            <div className="flex flex-col flex-1 w-0 lg:ml-64 print:ml-0 transition-all duration-300">
+                <div className="print:hidden">
+                    <Topbar toggleSidebar={toggleSidebar} />
+                </div>
+                <main className="flex-1 relative overflow-y-auto focus:outline-none bg-lightBlueBg/30 print:bg-white print:overflow-visible">
                     <div className="py-6 px-4 sm:px-6 md:px-8 h-full">
                         <Outlet />
                     </div>

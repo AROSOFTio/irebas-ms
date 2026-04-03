@@ -9,6 +9,8 @@ import Alerts from './pages/Alerts';
 import Incidents from './pages/Incidents';
 import AuditLogs from './pages/AuditLogs';
 import Users from './pages/Users';
+import Reports from './pages/Reports';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -27,8 +29,8 @@ function App() {
               <Route path="/incidents" element={<Incidents />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/reports" element={<div className="p-6 h-full font-semibold text-2xl">Reports (Coming Soon)</div>} />
-              <Route path="/settings" element={<div className="p-6 h-full font-semibold text-2xl">Settings (Coming Soon)</div>} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>
         </Routes>

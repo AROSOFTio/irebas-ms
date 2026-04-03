@@ -37,6 +37,7 @@ app.use('/api/security', require('./routes/securityRoutes'));
 app.use('/api/incidents', require('./routes/incidentRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/audit-logs', require('./routes/auditRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
 
 // Basic health route
 app.get('/api/health', (req, res) => {
