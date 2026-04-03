@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AlertOctagon, ShieldX, UserPlus } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 const Alerts = () => {
+    const { user } = useContext(AuthContext);
+    const userRole = user?.role_name || user?.role || '';
+    const canClaim = ['Admin', 'Security Analyst', 'IT Officer'].includes(userRole);
     const [alerts, setAlerts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -60,12 +64,16 @@ const Alerts = () => {
                         <p className="text-sm text-gray-600 mb-4 flex-1">{alert.description}</p>
                         <div className="flex justify-between items-center text-xs text-gray-500 mt-auto pt-4 border-t border-gray-100">
                             <span>{new Date(alert.created_at).toLocaleTimeString()}</span>
-                            <button 
-                                onClick={() => investigateAlert(alert.id)}
-                                className="flex items-center text-primeBlue hover:text-primeBlueHover font-semibold bg-blue-50 px-3 py-1.5 rounded"
-                            >
-                                <UserPlus className="w-4 h-4 mr-1" /> Claim Ticket
-                            </button>
+                            {canClaim ? (
+                                <button 
+                                    onClick={() => investigateAlert(alert.id)}
+                                    className="flex items-center text-primeBlue hover:text-primeBlueHover font-semibold bg-blue-50 px-3 py-1.5 rounded"
+                                >
+                                    <UserPlus className="w-4 h-4 mr-1" /> Claim Ticket
+                                </button>
+                            ) : (
+                                <span className="text-gray-400 italic text-xs">View only</span>
+                            )}
                         </div>
                     </div>
                 ))}

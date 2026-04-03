@@ -71,14 +71,17 @@ const Topbar = ({ toggleSidebar }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-                <button 
-                    onClick={simulateAttack}
-                    disabled={simulating}
-                    className="hidden sm:flex items-center text-xs font-semibold px-3 py-1.5 bg-accentRed text-white rounded shadow-sm hover:bg-red-800 transition-colors disabled:opacity-50"
-                >
-                    <PlayCircle className="w-4 h-4 mr-1" />
-                    Simulate Threat
-                </button>
+                {/* Only Admin and Security Analyst can simulate threats */}
+                {['Admin', 'Security Analyst'].includes(user?.role_name || user?.role) && (
+                    <button 
+                        onClick={simulateAttack}
+                        disabled={simulating}
+                        className="hidden sm:flex items-center text-xs font-semibold px-3 py-1.5 bg-accentRed text-white rounded shadow-sm hover:bg-red-800 transition-colors disabled:opacity-50"
+                    >
+                        <PlayCircle className="w-4 h-4 mr-1" />
+                        Simulate Threat
+                    </button>
+                )}
 
                 {/* Functional Search */}
                 <div ref={searchRef} className="relative hidden md:block border-l border-gray-200 pl-4">

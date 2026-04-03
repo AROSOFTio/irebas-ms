@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { ClipboardList, CheckCircle2 } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 const Incidents = () => {
+    const { user } = useContext(AuthContext);
+    const userRole = user?.role_name || user?.role || '';
+    const canResolve = ['Admin', 'Security Analyst'].includes(userRole);
     const [incidents, setIncidents] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -72,14 +76,16 @@ const Incidents = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    {inc.status !== 'RESOLVED' && (
+                                    {inc.status !== 'RESOLVED' && canResolve ? (
                                         <button 
                                             onClick={() => resolveIncident(inc.id)}
                                             className="text-green-600 hover:text-green-900 bg-green-50 px-3 py-1 rounded-md flex items-center"
                                         >
                                             <CheckCircle2 className="w-4 h-4 mr-1"/> Resolve
                                         </button>
-                                    )}
+                                    ) : inc.status !== 'RESOLVED' ? (
+                                        <span className="text-gray-400 italic text-xs">View only</span>
+                                    ) : null}
                                 </td>
                             </tr>
                         ))}

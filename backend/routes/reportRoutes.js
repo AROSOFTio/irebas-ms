@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const reportController = require('../controllers/reportController');
 const auth = require('../middleware/auth');
-const auditLogger = require('../middleware/auditLogger');
+const checkRole = require('../middleware/checkRole');
 
-// Fetch report stats (Read-only, no audit need)
-router.get('/summary', auth, reportController.getSummary);
+// Admin and Manager only
+router.get('/summary', auth, checkRole(['Admin', 'Manager']), reportController.getSummary);
 
 module.exports = router;

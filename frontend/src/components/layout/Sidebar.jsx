@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
     LayoutDashboard,
@@ -10,19 +10,28 @@ import {
     Users,
     Settings
 } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
-const navItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Security Events', path: '/events', icon: ShieldAlert },
-    { name: 'Alerts', path: '/alerts', icon: Bell },
-    { name: 'Incidents', path: '/incidents', icon: AlertTriangle },
-    { name: 'Audit Logs', path: '/audit-logs', icon: FileText },
-    { name: 'Reports', path: '/reports', icon: BarChart3 },
-    { name: 'Users', path: '/users', icon: Users },
-    { name: 'Settings', path: '/settings', icon: Settings },
+// Each item declares which roles can see it (empty = all roles)
+const allNavItems = [
+    { name: 'Dashboard',       path: '/dashboard',  icon: LayoutDashboard, roles: [] },
+    { name: 'Security Events', path: '/events',     icon: ShieldAlert,     roles: [] },
+    { name: 'Alerts',          path: '/alerts',     icon: Bell,            roles: [] },
+    { name: 'Incidents',       path: '/incidents',  icon: AlertTriangle,   roles: [] },
+    { name: 'Audit Logs',      path: '/audit-logs', icon: FileText,        roles: ['Admin', 'Manager'] },
+    { name: 'Reports',         path: '/reports',    icon: BarChart3,       roles: ['Admin', 'Manager'] },
+    { name: 'Users',           path: '/users',      icon: Users,           roles: ['Admin'] },
+    { name: 'Settings',        path: '/settings',   icon: Settings,        roles: ['Admin'] },
 ];
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {
+    const { user } = useContext(AuthContext);
+    const userRole = user?.role_name || user?.role || '';
+
+    const navItems = allNavItems.filter(item =>
+        item.roles.length === 0 || item.roles.includes(userRole)
+    );
+
     return (
         <>
             {isOpen && (
@@ -38,6 +47,10 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
                         <img src="/logo.png" alt="Centenary Bank" className="h-10 object-contain" />
                     </div>
                     <span className="text-xs font-semibold tracking-wider text-gray-400 mt-2">SECURITY SYSTEM</span>
+                    {/* Role badge */}
+                    <span className="mt-2 px-3 py-0.5 text-xs font-bold rounded-full bg-primeBlue/60 text-white">
+                        {userRole}
+                    </span>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
@@ -62,3 +75,4 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
 };
 
 export default Sidebar;
+
