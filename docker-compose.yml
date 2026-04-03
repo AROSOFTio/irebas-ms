@@ -25,7 +25,7 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
-      - "8081:80" # Exposed on port 8081 to avoid conflict with aaPanel
+      - "8082:80" # Exposed on port 8082 to avoid conflict with aaPanel
     networks:
       - irebas_network
     depends_on:
