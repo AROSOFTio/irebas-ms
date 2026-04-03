@@ -98,6 +98,7 @@ const Users = () => {
                                     <option value={1}>Admin</option>
                                     <option value={2}>Security Analyst</option>
                                     <option value={3}>Manager</option>
+                                    <option value={4}>IT Officer</option>
                                 </select>
                             </div>
                             <div className="flex justify-end gap-2">

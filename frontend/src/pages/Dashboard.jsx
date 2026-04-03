@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ShieldAlert, AlertTriangle, Activity, CheckCircle, Bell } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
@@ -22,6 +23,7 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
 );
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const [stats, setStats] = useState({
         totalAlarms: null,
         criticalAlerts: null,
@@ -66,7 +68,10 @@ const Dashboard = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Security Dashboard</h1>
                     <p className="text-sm text-gray-500 mt-1">Real-time overview of system security status.</p>
                 </div>
-                <button className="btn-primary flex items-center">
+                <button
+                    onClick={() => navigate('/reports')}
+                    className="btn-primary flex items-center bg-primeBlue text-white px-4 py-2 rounded shadow hover:bg-primeBlueHover transition text-sm font-semibold"
+                >
                     <Activity className="w-4 h-4 mr-2" />
                     Generate Report
                 </button>

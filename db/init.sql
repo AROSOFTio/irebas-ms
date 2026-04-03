@@ -49,10 +49,11 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     action VARCHAR(255) NOT NULL,
     user_id INT NULL,
+    ip_address VARCHAR(45),
     details TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- Insert default roles
-INSERT INTO roles (name) VALUES ('Admin'), ('Security Analyst'), ('Manager') ON DUPLICATE KEY UPDATE name=name;
+INSERT INTO roles (name) VALUES ('Admin'), ('Security Analyst'), ('Manager'), ('IT Officer') ON DUPLICATE KEY UPDATE name=name;
