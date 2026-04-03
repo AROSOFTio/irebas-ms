@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const Login = () => {
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="flex justify-center mb-6">
-                    <img src="/logo.png" alt="Centenary Bank" className="h-24 object-contain drop-shadow-sm" />
+                    <img src="/logo.png" alt="Centenary Bank" className="h-16 object-contain drop-shadow-sm" />
                 </div>
                 <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
                     IREBAS Portal
