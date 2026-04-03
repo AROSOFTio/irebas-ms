@@ -59,7 +59,7 @@ const Alerts = () => {
                         </div>
                         <p className="text-sm text-gray-600 mb-4 flex-1">{alert.description}</p>
                         <div className="flex justify-between items-center text-xs text-gray-500 mt-auto pt-4 border-t border-gray-100">
-                            <span>{new Date(alert.created_at).toLocaleTimeString()()}</span>
+                            <span>{new Date(alert.created_at).toLocaleTimeString()}</span>
                             <button 
                                 onClick={() => investigateAlert(alert.id)}
                                 className="flex items-center text-primeBlue hover:text-primeBlueHover font-semibold bg-blue-50 px-3 py-1.5 rounded"
