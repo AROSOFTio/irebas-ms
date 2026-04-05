@@ -77,7 +77,7 @@ const Reports = () => {
                             <p className="text-2xl font-extrabold text-blue-700">{stats.financialStats.totalAccounts}</p>
                             <p className="text-xs text-gray-400 mt-1">Customer Accounts</p>
                         </div>
-                        {stats.financialStats.txByType.map(tx => (
+                        {(stats.financialStats?.txByType || []).map(tx => (
                             <div key={tx.name} className="bg-white p-5 rounded-xl shadow border border-gray-100">
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className={`p-2 rounded-lg ${tx.name === 'DEPOSIT' ? 'bg-green-100' : tx.name === 'WITHDRAWAL' ? 'bg-red-100' : 'bg-purple-100'}`}>

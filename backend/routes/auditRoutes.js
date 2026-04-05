@@ -5,6 +5,6 @@ const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 
 // Admin and Manager only
-router.get('/', auth, checkRole(['Admin', 'Manager']), auditController.getAuditLogs);
+router.get('/', auth, checkRole(['General Manager', 'Manager', 'System Security']), auditController.getAuditLogs);
 
 module.exports = router;

@@ -36,7 +36,7 @@ exports.getSummary = async (req, res) => {
             `SELECT COUNT(*) as total_accounts FROM customers`
         );
 
-        // Financial: Transaction volume by type
+        // Financial: Transaction volume by type — safe even if empty
         const [txByType] = await pool.query(
             `SELECT transaction_type as name, COUNT(*) as count, COALESCE(SUM(amount), 0) as total
              FROM transactions
@@ -47,8 +47,8 @@ exports.getSummary = async (req, res) => {
         const [txByDay] = await pool.query(
             `SELECT 
                 DATE_FORMAT(created_at, '%d %b') as date,
-                SUM(CASE WHEN transaction_type = 'DEPOSIT' THEN amount ELSE 0 END) as deposits,
-                SUM(CASE WHEN transaction_type = 'WITHDRAWAL' THEN amount ELSE 0 END) as withdrawals
+                COALESCE(SUM(CASE WHEN transaction_type = 'DEPOSIT' THEN amount ELSE 0 END), 0) as deposits,
+                COALESCE(SUM(CASE WHEN transaction_type = 'WITHDRAWAL' THEN amount ELSE 0 END), 0) as withdrawals
              FROM transactions
              WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
              GROUP BY DATE(created_at), DATE_FORMAT(created_at, '%d %b')
@@ -56,22 +56,22 @@ exports.getSummary = async (req, res) => {
         );
 
         res.json({
-            threatTypes,
-            alertSeverity,
+            threatTypes: threatTypes || [],
+            alertSeverity: alertSeverity || [],
             incidentStats: {
                 total: total_incidents || 0,
                 resolved: resolved_incidents || 0,
                 resolutionRate: total_incidents > 0 ? ((resolved_incidents / total_incidents) * 100).toFixed(1) : 0
             },
             financialStats: {
-                totalBalance: parseFloat(total_balance),
-                totalAccounts: total_accounts,
-                txByType,
-                txByDay,
+                totalBalance: parseFloat(total_balance) || 0,
+                totalAccounts: total_accounts || 0,
+                txByType: txByType || [],
+                txByDay: txByDay || [],
             }
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to generate report' });
+        console.error('Report error:', error.message);
+        res.status(500).json({ error: error.message });
     }
 };
