@@ -4,7 +4,7 @@ const auditController = require('../controllers/auditController');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 
-// Admin and Manager only
-router.get('/', auth, checkRole(['General Manager', 'Manager', 'System Security']), auditController.getAuditLogs);
+// Audit logs ONLY for General Manager and System Security Analyst
+router.get('/', auth, checkRole(['General Manager', 'System Security Analyst']), auditController.getAuditLogs);
 
 module.exports = router;

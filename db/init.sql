@@ -85,5 +85,5 @@ CREATE TABLE IF NOT EXISTS transactions (
 );
 
 -- Insert default roles
-INSERT IGNORE INTO roles (name) VALUES ('General Manager'), ('Manager'), ('System Security'), ('Front Desk'), ('IT Officer');
+INSERT IGNORE INTO roles (name) VALUES ('General Manager'), ('Manager'), ('System Security Analyst'), ('Front Desk'), ('IT Officer');
 

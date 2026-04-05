@@ -5,8 +5,10 @@ const auth = require('../middleware/auth');
 const auditLogger = require('../middleware/auditLogger');
 const checkRole = require('../middleware/checkRole');
 
-// General Manager & Manager
-router.get('/', auth, checkRole(['General Manager', 'Manager']), userController.getUsers);
-router.post('/', auth, checkRole(['General Manager', 'Manager']), auditLogger, userController.createUser);
+// Only General Manager and Manager can see/create staff
+const topManagement = ['General Manager', 'Manager'];
+
+router.get('/', auth, checkRole(topManagement), userController.getUsers);
+router.post('/', auth, checkRole(topManagement), auditLogger, userController.createUser);
 
 module.exports = router;

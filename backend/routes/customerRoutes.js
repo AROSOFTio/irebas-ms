@@ -5,13 +5,17 @@ const auth = require('../middleware/auth');
 const auditLogger = require('../middleware/auditLogger');
 const checkRole = require('../middleware/checkRole');
 
-// Get all customers (Managers only)
-router.get('/', auth, checkRole(['General Manager', 'Manager', 'System Security']), customerController.getCustomers);
+// Role Lists
+const canView = ['General Manager', 'Manager', 'System Security Analyst'];
+const canCreate = ['General Manager', 'Manager'];
 
-// Create customer (Managers only)
-router.post('/', auth, checkRole(['General Manager', 'Manager']), auditLogger, customerController.createCustomer);
+// View customers (Managers + SSA)
+router.get('/', auth, checkRole(canView), customerController.getCustomers);
 
-// Get my profile (Customer only)
+// Create customer (ONLY GM and Manager)
+router.post('/', auth, checkRole(canCreate), auditLogger, customerController.createCustomer);
+
+// Profile
 router.get('/me', auth, checkRole(['Customer']), customerController.getCustomerProfile);
 
 module.exports = router;
