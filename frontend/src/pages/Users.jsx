@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { UserPlus, Shield } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 const Users = () => {
+    const { user: currentUser } = useContext(AuthContext);
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ username: '', password: '', role_id: 2 });
@@ -64,7 +66,7 @@ const Users = () => {
                             <tr key={user.id} className="hover:bg-gray-50">
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center">
-                                    {user.role === 'Admin' ? <Shield className="w-4 h-4 mr-1 text-accentRed" /> : null}
+                                    {user.role === 'General Manager' ? <Shield className="w-4 h-4 mr-1 text-accentRed" /> : null}
                                     {user.role}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -95,10 +97,11 @@ const Users = () => {
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
                                 <select value={formData.role_id} onChange={e => setFormData({...formData, role_id: parseInt(e.target.value)})} className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white">
-                                    <option value={1}>Admin</option>
-                                    <option value={2}>Security Analyst</option>
-                                    <option value={3}>Manager</option>
-                                    <option value={4}>IT Officer</option>
+                                    {currentUser?.role_name === 'General Manager' && <option value={1}>General Manager</option>}
+                                    {currentUser?.role_name === 'General Manager' && <option value={2}>Manager</option>}
+                                    <option value={3}>System Security</option>
+                                    <option value={4}>Front Desk</option>
+                                    <option value={5}>IT Officer</option>
                                 </select>
                             </div>
                             <div className="flex justify-end gap-2">

@@ -3,9 +3,9 @@ const pool = require('./db');
 async function seed() {
     try {
         console.log("Seeding database (Bypassing native bcrypt compiler)...");
-        const [roles] = await pool.query(`SELECT id FROM roles WHERE name = 'Admin'`);
+        const [roles] = await pool.query(`SELECT id FROM roles WHERE name = 'General Manager'`);
         if (roles.length === 0) {
-            console.log("ERROR: Admin role not found. Ensure init.sql ran properly.");
+            console.log("ERROR: General Manager role not found. Ensure init.sql ran properly.");
             return;
         }
         const adminRoleId = roles[0].id;
@@ -17,7 +17,7 @@ async function seed() {
             `INSERT IGNORE INTO users (username, password_hash, role_id) VALUES (?, ?, ?)`,
             ['admin', hashedPassword, adminRoleId]
         );
-        console.log("SUCCESS: Admin user verified/seeded! You can now login with admin / password123");
+        console.log("SUCCESS: General Manager user verified/seeded! You can now login with admin / password123");
     } catch (error) {
         console.error("Seed error:", error.message);
     } finally {

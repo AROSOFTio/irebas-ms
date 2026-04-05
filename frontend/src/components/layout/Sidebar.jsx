@@ -8,20 +8,22 @@ import {
     FileText,
     BarChart3,
     Users,
-    Settings
+    Settings,
+    Activity
 } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
 // Each item declares which roles can see it (empty = all roles)
 const allNavItems = [
-    { name: 'Dashboard',       path: '/dashboard',  icon: LayoutDashboard, roles: [] },
-    { name: 'Security Events', path: '/events',     icon: ShieldAlert,     roles: [] },
-    { name: 'Alerts',          path: '/alerts',     icon: Bell,            roles: [] },
-    { name: 'Incidents',       path: '/incidents',  icon: AlertTriangle,   roles: [] },
-    { name: 'Audit Logs',      path: '/audit-logs', icon: FileText,        roles: ['Admin', 'Manager'] },
-    { name: 'Reports',         path: '/reports',    icon: BarChart3,       roles: ['Admin', 'Manager'] },
-    { name: 'Users',           path: '/users',      icon: Users,           roles: ['Admin'] },
-    { name: 'Settings',        path: '/settings',   icon: Settings,        roles: ['Admin'] },
+    { name: 'Dashboard',       path: '/dashboard',    icon: LayoutDashboard, roles: [] },
+    { name: 'Transactions',    path: '/transactions', icon: Activity,        roles: [] },
+    { name: 'Security Events', path: '/events',       icon: ShieldAlert,     roles: [] },
+    { name: 'Alerts',          path: '/alerts',       icon: Bell,            roles: [] },
+    { name: 'Incidents',       path: '/incidents',    icon: AlertTriangle,   roles: [] },
+    { name: 'Audit Logs',      path: '/audit-logs',   icon: FileText,        roles: ['General Manager', 'Manager', 'System Security'] },
+    { name: 'Reports',         path: '/reports',      icon: BarChart3,       roles: ['General Manager', 'Manager'] },
+    { name: 'Users',           path: '/users',        icon: Users,           roles: ['General Manager', 'Manager'] },
+    { name: 'Settings',        path: '/settings',     icon: Settings,        roles: ['General Manager'] },
 ];
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {

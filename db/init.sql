@@ -55,5 +55,16 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    transaction_type ENUM('DEPOSIT', 'WITHDRAWAL', 'TRANSFER') NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    location_ip VARCHAR(45),
+    location_geo VARCHAR(255),
+    device_used VARCHAR(255),
+    customer_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert default roles
-INSERT INTO roles (name) VALUES ('Admin'), ('Security Analyst'), ('Manager'), ('IT Officer') ON DUPLICATE KEY UPDATE name=name;
+INSERT IGNORE INTO roles (name) VALUES ('General Manager'), ('Manager'), ('System Security'), ('Front Desk'), ('IT Officer');

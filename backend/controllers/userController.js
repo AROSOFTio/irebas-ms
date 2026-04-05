@@ -18,10 +18,14 @@ exports.getUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
     const { username, password, role_id } = req.body;
     try {
+        if (req.user.role === 'Manager' && (role_id === 1 || role_id === 2)) {
+            return res.status(403).json({ message: "Managers cannot provision General Manager or Manager roles" });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         await pool.query(
             `INSERT INTO users (username, password_hash, role_id) VALUES (?, ?, ?)`,
-            [username, hashedPassword, role_id || 2] // Default to Analyst (role 2) if missing
+            [username, hashedPassword, role_id || 3] // Default to System Security if missing
         );
         res.status(201).json({ message: "Staff member provisioned successfully" });
     } catch (error) {

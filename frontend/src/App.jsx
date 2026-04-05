@@ -12,6 +12,7 @@ import AuditLogs from './pages/AuditLogs';
 import Users from './pages/Users';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
+import Transactions from './pages/Transactions';
 
 function App() {
   return (
@@ -27,17 +28,18 @@ function App() {
               <Route path="/events" element={<SecurityEvents />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/incidents" element={<Incidents />} />
+              <Route path="/transactions" element={<Transactions />} />
               <Route path="/audit-logs" element={
-                <RoleRoute allowedRoles={['Admin', 'Manager']}><AuditLogs /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'Manager', 'System Security']}><AuditLogs /></RoleRoute>
               } />
               <Route path="/reports" element={
-                <RoleRoute allowedRoles={['Admin', 'Manager']}><Reports /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'Manager']}><Reports /></RoleRoute>
               } />
               <Route path="/users" element={
-                <RoleRoute allowedRoles={['Admin']}><Users /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'Manager']}><Users /></RoleRoute>
               } />
               <Route path="/settings" element={
-                <RoleRoute allowedRoles={['Admin']}><Settings /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager']}><Settings /></RoleRoute>
               } />
             </Route>
           </Route>
