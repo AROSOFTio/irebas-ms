@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserPlus, Wallet } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 const Customers = () => {
+    const { addToast } = useToast();
     const [customers, setCustomers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ username: '', password: '', first_name: '', last_name: '' });
@@ -27,9 +29,9 @@ const Customers = () => {
             setShowModal(false);
             setFormData({ username: '', password: '', first_name: '', last_name: '' });
             fetchCustomers();
-            alert("Customer account created successfully");
+            addToast(`Account opened for ${formData.first_name} ${formData.last_name} successfully.`, 'success');
         } catch (error) {
-            alert(error.response?.data?.message || "Failed to create customer");
+            addToast(error.response?.data?.message || 'Failed to create customer account.', 'error');
         }
     };
 

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import RoleRoute from './components/layout/RoleRoute';
 import MainLayout from './components/layout/MainLayout';
@@ -19,6 +20,7 @@ import CustomerDashboard from './pages/customer/CustomerDashboard';
 function App() {
   return (
     <AuthProvider>
+      <ToastProvider>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -46,15 +48,14 @@ function App() {
               <Route path="/settings" element={
                 <RoleRoute allowedRoles={['General Manager', 'System Security']}><Settings /></RoleRoute>
               } />
-            </Route>
-
-            {/* Customer Only Portal */}
-            <Route path="/customer/dashboard" element={
+              <Route path="/customer/dashboard" element={
                 <RoleRoute allowedRoles={['Customer']}><CustomerDashboard /></RoleRoute>
-            } />
+              } />
+            </Route>
           </Route>
         </Routes>
       </Router>
+      </ToastProvider>
     </AuthProvider>
   );
 }

@@ -10,22 +10,28 @@ import {
     Users,
     Settings,
     Activity,
-    UserCircle
+    UserCircle,
+    Wallet,
+    History
 } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
-// Each item declares which roles can see it (empty = all roles)
+const staffRoles = ['General Manager', 'Manager', 'System Security', 'Front Desk', 'IT Officer'];
+
 const allNavItems = [
-    { name: 'Dashboard',       path: '/dashboard',    icon: LayoutDashboard, roles: [] },
-    { name: 'Transactions',    path: '/transactions', icon: Activity,        roles: [] },
-    { name: 'Security Events', path: '/events',       icon: ShieldAlert,     roles: [] },
-    { name: 'Alerts',          path: '/alerts',       icon: Bell,            roles: [] },
-    { name: 'Incidents',       path: '/incidents',    icon: AlertTriangle,   roles: [] },
+    { name: 'Dashboard',       path: '/dashboard',    icon: LayoutDashboard, roles: staffRoles },
+    { name: 'Transactions',    path: '/transactions', icon: Activity,        roles: staffRoles },
+    { name: 'Security Events', path: '/events',       icon: ShieldAlert,     roles: staffRoles },
+    { name: 'Alerts',          path: '/alerts',       icon: Bell,            roles: staffRoles },
+    { name: 'Incidents',       path: '/incidents',    icon: AlertTriangle,   roles: staffRoles },
     { name: 'Audit Logs',      path: '/audit-logs',   icon: FileText,        roles: ['General Manager', 'Manager', 'System Security'] },
     { name: 'Reports',         path: '/reports',      icon: BarChart3,       roles: ['General Manager', 'Manager', 'System Security'] },
     { name: 'Staff',           path: '/users',        icon: Users,           roles: ['General Manager', 'Manager', 'System Security'] },
     { name: 'Customers',       path: '/customers',    icon: UserCircle,      roles: ['General Manager', 'Manager', 'System Security'] },
     { name: 'Settings',        path: '/settings',     icon: Settings,        roles: ['General Manager', 'System Security'] },
+    
+    // Customer Only
+    { name: 'My Account',      path: '/customer/dashboard', icon: Wallet,    roles: ['Customer'] },
 ];
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {
@@ -33,7 +39,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     const userRole = user?.role_name || user?.role || '';
 
     const navItems = allNavItems.filter(item =>
-        item.roles.length === 0 || item.roles.includes(userRole)
+        item.roles.includes(userRole)
     );
 
     return (
@@ -50,7 +56,9 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
                     <div className="bg-white p-2 rounded-xl w-full flex justify-center mb-2 shadow-sm">
                         <img src="/logo.png" alt="Centenary Bank" className="h-10 object-contain" />
                     </div>
-                    <span className="text-xs font-semibold tracking-wider text-gray-400 mt-2">SECURITY SYSTEM</span>
+                    <span className="text-xs font-semibold tracking-wider text-gray-400 mt-2">
+                        {userRole === 'Customer' ? 'ONLINE BANKING' : 'SECURITY SYSTEM'}
+                    </span>
                     {/* Role badge */}
                     <span className="mt-2 px-3 py-0.5 text-xs font-bold rounded-full bg-primeBlue/60 text-white">
                         {userRole}

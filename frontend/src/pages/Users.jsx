@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { UserPlus, Shield } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const Users = () => {
     const { user: currentUser } = useContext(AuthContext);
+    const { addToast } = useToast();
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ 
@@ -37,9 +39,9 @@ const Users = () => {
             setShowModal(false);
             setFormData({ username: '', password: '', first_name: '', last_name: '', designation: '', staff_id: '', role_id: 3 });
             fetchUsers();
-            alert("Staff member provisioned successfully");
+            addToast(`Staff member ${formData.first_name} ${formData.last_name} provisioned successfully.`, 'success');
         } catch (error) {
-            alert(error.response?.data?.message || "Failed to create user");
+            addToast(error.response?.data?.message || 'Failed to create staff member.', 'error');
         }
     };
 
