@@ -7,7 +7,15 @@ const Users = () => {
     const { user: currentUser } = useContext(AuthContext);
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({ username: '', password: '', role_id: 2 });
+    const [formData, setFormData] = useState({ 
+        username: '', 
+        password: '', 
+        first_name: '',
+        last_name: '',
+        designation: '',
+        staff_id: '',
+        role_id: 3 
+    });
 
     const fetchUsers = async () => {
         try {
@@ -27,7 +35,7 @@ const Users = () => {
         try {
             await axios.post('/api/users', formData);
             setShowModal(false);
-            setFormData({ username: '', password: '', role_id: 2 });
+            setFormData({ username: '', password: '', first_name: '', last_name: '', designation: '', staff_id: '', role_id: 3 });
             fetchUsers();
             alert("Staff member provisioned successfully");
         } catch (error) {
@@ -55,7 +63,8 @@ const Users = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Staff Member</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Designation & ID</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
@@ -64,7 +73,14 @@ const Users = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                         {users.map(user => (
                             <tr key={user.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm font-bold text-gray-900">{user.first_name} {user.last_name}</div>
+                                    <div className="text-xs text-gray-500">@{user.username}</div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm text-gray-900">{user.designation}</div>
+                                    <div className="text-xs font-mono text-gray-500 bg-gray-100 inline-block px-1 rounded">{user.staff_id}</div>
+                                </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center">
                                     {user.role === 'General Manager' ? <Shield className="w-4 h-4 mr-1 text-accentRed" /> : null}
                                     {user.role}
@@ -83,19 +99,45 @@ const Users = () => {
 
             {showModal && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex justify-center items-center">
-                    <div className="bg-white p-6 justify-center rounded shadow-lg w-96">
+                    <div className="bg-white p-6 justify-center rounded shadow-lg w-full max-w-lg">
                         <h2 className="text-xl font-bold mb-4">Provision New Staff</h2>
                         <form onSubmit={handleCreate}>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                                <input required type="text" value={formData.username} onChange={e => setFormData({...formData, username: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                            
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                                    <input required type="text" value={formData.first_name} onChange={e => setFormData({...formData, first_name: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                                    <input required type="text" value={formData.last_name} onChange={e => setFormData({...formData, last_name: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">Temporary Password</label>
-                                <input required type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                            
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">Designation</label>
+                                    <input required type="text" value={formData.designation} onChange={e => setFormData({...formData, designation: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">Staff ID</label>
+                                    <input required type="text" value={formData.staff_id} onChange={e => setFormData({...formData, staff_id: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
                             </div>
+
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">App Username</label>
+                                    <input required type="text" value={formData.username} onChange={e => setFormData({...formData, username: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">Temporary Password</label>
+                                    <input required type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-primeBlue" />
+                                </div>
+                            </div>
+                            
                             <div className="mb-6">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
+                                <label className="block text-gray-700 text-sm font-bold mb-2">System Role</label>
                                 <select value={formData.role_id} onChange={e => setFormData({...formData, role_id: parseInt(e.target.value)})} className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white">
                                     {currentUser?.role_name === 'General Manager' && <option value={1}>General Manager</option>}
                                     {currentUser?.role_name === 'General Manager' && <option value={2}>Manager</option>}
@@ -106,7 +148,7 @@ const Users = () => {
                             </div>
                             <div className="flex justify-end gap-2">
                                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-gray-500 bg-gray-100 hover:bg-gray-200 rounded">Cancel</button>
-                                <button type="submit" className="px-4 py-2 text-white bg-primeBlue hover:bg-primeBlueHover rounded">Provision</button>
+                                <button type="submit" className="px-4 py-2 text-white bg-primeBlue hover:bg-primeBlueHover rounded">Provision Staff</button>
                             </div>
                         </form>
                     </div>

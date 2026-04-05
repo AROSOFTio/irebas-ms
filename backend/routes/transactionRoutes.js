@@ -4,10 +4,13 @@ const transactionController = require('../controllers/transactionController');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 
-// Fetch all transactions
-router.get('/', auth, transactionController.getTransactions);
+// Fetch all transactions for monitoring
+router.get('/', auth, checkRole(['General Manager', 'Manager', 'System Security']), transactionController.getTransactions);
 
-// Simulate a transaction
-router.post('/simulate', auth, transactionController.simulateTransaction);
+// Fetch logged in customer's personal transactions
+router.get('/me', auth, checkRole(['Customer']), transactionController.getCustomerTransactions);
+
+// Perform a real transaction
+router.post('/perform', auth, checkRole(['Customer']), transactionController.performTransaction);
 
 module.exports = router;

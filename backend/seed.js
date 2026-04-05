@@ -10,14 +10,14 @@ async function seed() {
         }
         const adminRoleId = roles[0].id;
 
-        // Pre-computed hash for 'password123' to prevent Alpine native crashing
-        const hashedPassword = "$2b$10$YyM1O2q.wMz./L5L8oN9iukD8A9X6/O2o5oDIfPZi4R5k6I0vO5.a"; 
+        // Pre-computed hash from user
+        const hashedPassword = "$2a$12$LM.lBvOv6mMQBUwQPOVi4OE5fapa5bhHfxVT40eE48puIdv02iLii"; 
         
         await pool.query(
-            `INSERT IGNORE INTO users (username, password_hash, role_id) VALUES (?, ?, ?)`,
-            ['admin', hashedPassword, adminRoleId]
+            `INSERT IGNORE INTO users (username, password_hash, first_name, last_name, designation, staff_id, role_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            ['Laker', hashedPassword, 'Laker', 'Grace', 'General Manager', 'EMP-001', adminRoleId]
         );
-        console.log("SUCCESS: General Manager user verified/seeded! You can now login with admin / password123");
+        console.log("SUCCESS: General Manager user Laker Grace verified/seeded!");
     } catch (error) {
         console.error("Seed error:", error.message);
     } finally {

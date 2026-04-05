@@ -10,9 +10,11 @@ import Alerts from './pages/Alerts';
 import Incidents from './pages/Incidents';
 import AuditLogs from './pages/AuditLogs';
 import Users from './pages/Users';
+import Customers from './pages/Customers';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
+import CustomerDashboard from './pages/customer/CustomerDashboard';
 
 function App() {
   return (
@@ -33,15 +35,23 @@ function App() {
                 <RoleRoute allowedRoles={['General Manager', 'Manager', 'System Security']}><AuditLogs /></RoleRoute>
               } />
               <Route path="/reports" element={
-                <RoleRoute allowedRoles={['General Manager', 'Manager']}><Reports /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'Manager', 'System Security']}><Reports /></RoleRoute>
               } />
               <Route path="/users" element={
-                <RoleRoute allowedRoles={['General Manager', 'Manager']}><Users /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'Manager', 'System Security']}><Users /></RoleRoute>
+              } />
+              <Route path="/customers" element={
+                <RoleRoute allowedRoles={['General Manager', 'Manager', 'System Security']}><Customers /></RoleRoute>
               } />
               <Route path="/settings" element={
-                <RoleRoute allowedRoles={['General Manager']}><Settings /></RoleRoute>
+                <RoleRoute allowedRoles={['General Manager', 'System Security']}><Settings /></RoleRoute>
               } />
             </Route>
+
+            {/* Customer Only Portal */}
+            <Route path="/customer/dashboard" element={
+                <RoleRoute allowedRoles={['Customer']}><CustomerDashboard /></RoleRoute>
+            } />
           </Route>
         </Routes>
       </Router>

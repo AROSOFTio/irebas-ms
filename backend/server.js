@@ -39,6 +39,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/audit-logs', require('./routes/auditRoutes'));
 app.use('/api/reports', require('./routes/reportRoutes'));
 app.use('/api/transactions', require('./routes/transactionRoutes'));
+app.use('/api/customers', require('./routes/customerRoutes'));
 // Basic health route
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'IREBAS Backend is running' });

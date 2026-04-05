@@ -49,14 +49,6 @@ const Transactions = () => {
         return () => socket.disconnect();
     }, []);
 
-    const simulateTransaction = async () => {
-        try {
-            await axios.post('/api/transactions/simulate');
-        } catch (error) {
-            console.error("Failed to simulate", error);
-        }
-    };
-
     const getTypeIcon = (type) => {
         switch (type) {
             case 'DEPOSIT': return <ArrowDownCircle className="text-green-500 w-5 h-5" />;
@@ -73,13 +65,6 @@ const Transactions = () => {
                     <h1 className="text-2xl font-bold text-gray-900 border-l-4 border-primeBlue pl-3">Transaction Monitoring</h1>
                     <p className="text-sm text-gray-500 mt-1">Real-time tracking of deposits, withdrawals, and transfers.</p>
                 </div>
-                <button 
-                    onClick={simulateTransaction}
-                    className="flex items-center text-sm font-semibold px-4 py-2 bg-primeBlue text-white rounded shadow hover:bg-primeBlueHover transition"
-                >
-                    <Activity className="w-4 h-4 mr-2 animate-pulse" />
-                    Simulate Event
-                </button>
             </div>
 
             {/* Quick Stats */}
@@ -133,8 +118,9 @@ const Transactions = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount (USD)</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount (UGX)</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location & IP</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Device</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Timestamp</th>
@@ -149,13 +135,17 @@ const Transactions = () => {
                             transactions.map((tx, idx) => (
                                 <tr key={tx.id || idx} className={`hover:bg-gray-50 transition ${idx === 0 ? 'bg-blue-50/50' : ''}`}>
                                     <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm font-bold text-gray-900">{tx.first_name} {tx.last_name}</div>
+                                        {tx.destination_account && <div className="text-xs text-blue-600 font-bold bg-blue-50 inline-block px-1 rounded">&rarr; {tx.destination_account}</div>}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             {getTypeIcon(tx.transaction_type)}
                                             <span className="ml-2 text-sm font-bold text-gray-900">{tx.transaction_type}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                        ${parseFloat(tx.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
+                                        {parseFloat(tx.amount).toLocaleString()} UGX
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-900 flex items-center">

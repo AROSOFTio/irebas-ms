@@ -9,7 +9,8 @@ import {
     BarChart3,
     Users,
     Settings,
-    Activity
+    Activity,
+    UserCircle
 } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -21,9 +22,10 @@ const allNavItems = [
     { name: 'Alerts',          path: '/alerts',       icon: Bell,            roles: [] },
     { name: 'Incidents',       path: '/incidents',    icon: AlertTriangle,   roles: [] },
     { name: 'Audit Logs',      path: '/audit-logs',   icon: FileText,        roles: ['General Manager', 'Manager', 'System Security'] },
-    { name: 'Reports',         path: '/reports',      icon: BarChart3,       roles: ['General Manager', 'Manager'] },
-    { name: 'Users',           path: '/users',        icon: Users,           roles: ['General Manager', 'Manager'] },
-    { name: 'Settings',        path: '/settings',     icon: Settings,        roles: ['General Manager'] },
+    { name: 'Reports',         path: '/reports',      icon: BarChart3,       roles: ['General Manager', 'Manager', 'System Security'] },
+    { name: 'Staff',           path: '/users',        icon: Users,           roles: ['General Manager', 'Manager', 'System Security'] },
+    { name: 'Customers',       path: '/customers',    icon: UserCircle,      roles: ['General Manager', 'Manager', 'System Security'] },
+    { name: 'Settings',        path: '/settings',     icon: Settings,        roles: ['General Manager', 'System Security'] },
 ];
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {

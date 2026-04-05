@@ -17,8 +17,12 @@ const Login = () => {
         setError('');
         setLoading(true);
         try {
-            await login(username, password);
-            navigate('/dashboard');
+            const loggedInUser = await login(username, password);
+            if (loggedInUser.role === 'Customer') {
+                navigate('/customer/dashboard');
+            } else {
+                navigate('/dashboard');
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to login');
         } finally {
