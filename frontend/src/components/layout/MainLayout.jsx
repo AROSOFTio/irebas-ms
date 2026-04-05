@@ -10,8 +10,8 @@ const MainLayout = () => {
     const [toasts, setToasts] = useState([]);
 
     useEffect(() => {
-        // Connect directly to the exposed backend port to bypass nginx strict routes
-        const socket = io(`http://${window.location.hostname}:5005`);
+        // Connect directly to backend using relative path so Nginx reverse proxy routes it via /socket.io/
+        const socket = io('/', { path: '/socket.io' });
 
         socket.on('new_alert', (alertData) => {
             setToasts(prev => [...prev, alertData]);

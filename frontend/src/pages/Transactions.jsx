@@ -34,7 +34,7 @@ const Transactions = () => {
     useEffect(() => {
         fetchTransactions();
 
-        const socket = io(`http://${window.location.hostname}:5005`);
+        const socket = io('/', { path: '/socket.io' });
         
         socket.on('new_transaction', (newTx) => {
             setTransactions(prev => {
