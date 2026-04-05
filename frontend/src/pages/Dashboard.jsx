@@ -83,7 +83,7 @@ const Dashboard = () => {
             {isManager && stats && (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <StatCard title="Total Bank Balance" value={stats.totalBalance} icon={Wallet} color="bg-emerald-500" sub="UGX — All Active Accounts" />
-                    <StatCard title="Active Customers" value={stats.activeCustomers} icon={Users} color="bg-primeBlue" sub="Provisioned accounts" />
+                    <StatCard title="Active Customers" value={stats.activeCustomers} icon={Users} color="bg-primeBlue" sub="Created accounts" />
                     <StatCard title="Total Transactions" value={stats.totalTransactions} icon={Activity} color="bg-purple-500" sub="All ledger entries" />
                     <StatCard title="Total Deposited" value={stats.totalDeposits} icon={ArrowDownCircle} color="bg-teal-500" sub="UGX — All-time" />
                 </div>

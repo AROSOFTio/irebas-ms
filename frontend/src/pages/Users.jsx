@@ -39,7 +39,7 @@ const Users = () => {
             setShowModal(false);
             setFormData({ username: '', password: '', first_name: '', last_name: '', designation: '', staff_id: '', role_id: 3 });
             fetchUsers();
-            addToast(`Staff member ${formData.first_name} ${formData.last_name} provisioned successfully.`, 'success');
+            addToast(`Staff member ${formData.first_name} ${formData.last_name} created successfully.`, 'success');
         } catch (error) {
             addToast(error.response?.data?.message || 'Failed to create staff member.', 'error');
         }
@@ -57,7 +57,7 @@ const Users = () => {
                     className="flex items-center text-sm font-semibold px-4 py-2 bg-primeBlue text-white rounded shadow hover:bg-primeBlueHover transition"
                 >
                     <UserPlus className="w-4 h-4 mr-2" />
-                    Provision Staff
+                    Create Staff
                 </button>
             </div>
 
@@ -102,7 +102,7 @@ const Users = () => {
             {showModal && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex justify-center items-center">
                     <div className="bg-white p-6 justify-center rounded shadow-lg w-full max-w-lg">
-                        <h2 className="text-xl font-bold mb-4">Provision New Staff</h2>
+                        <h2 className="text-xl font-bold mb-4">Create New Staff</h2>
                         <form onSubmit={handleCreate}>
                             
                             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -150,7 +150,7 @@ const Users = () => {
                             </div>
                             <div className="flex justify-end gap-2">
                                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-gray-500 bg-gray-100 hover:bg-gray-200 rounded">Cancel</button>
-                                <button type="submit" className="px-4 py-2 text-white bg-primeBlue hover:bg-primeBlueHover rounded">Provision Staff</button>
+                                <button type="submit" className="px-4 py-2 text-white bg-primeBlue hover:bg-primeBlueHover rounded">Create Staff</button>
                             </div>
                         </form>
                     </div>

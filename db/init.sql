@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS incidents (
 
 CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    action VARCHAR(255) NOT NULL, -- e.g. LOGIN, PROVISION_STAFF
+    action VARCHAR(255) NOT NULL, -- e.g. LOGIN, CREATE_STAFF
     module VARCHAR(100) NOT NULL, -- e.g. Auth, Users
     details TEXT,
     user_id INT NULL,

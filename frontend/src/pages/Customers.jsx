@@ -40,14 +40,14 @@ const Customers = () => {
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 border-l-4 border-primeBlue pl-3">Customer Accounts</h1>
-                    <p className="text-sm text-gray-500 mt-1">Provision and view official banking customers.</p>
+                    <p className="text-sm text-gray-500 mt-1">Create and view official banking customers.</p>
                 </div>
                 <button 
                     onClick={() => setShowModal(true)}
                     className="flex items-center text-sm font-semibold px-4 py-2 bg-primeBlue text-white rounded shadow hover:bg-primeBlueHover transition"
                 >
                     <UserPlus className="w-4 h-4 mr-2" />
-                    Provision Customer
+                    Create Customer
                 </button>
             </div>
 

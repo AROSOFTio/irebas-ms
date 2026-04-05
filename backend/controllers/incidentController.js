@@ -6,7 +6,7 @@ const THREAT_TEMPLATES = [
     { title: 'Unauthorized API Access Attempt', description: 'Access attempted on a protected endpoint without valid credentials.', severity: 'HIGH', event_type: 'UNAUTHORIZED_ACCESS' },
     { title: 'After-Hours Login Detected', description: 'Staff login recorded outside of business hours (10pm–5am).', severity: 'MEDIUM', event_type: 'AFTER_HOURS_LOGIN' },
     { title: 'Unusual Transfer Pattern', description: 'Multiple rapid transfers to different accounts detected.', severity: 'HIGH', event_type: 'SUSPICIOUS_TRANSFER' },
-    { title: 'New Admin Account Created', description: 'A new staff account with elevated privileges was provisioned.', severity: 'MEDIUM', event_type: 'PRIVILEGE_ESCALATION' },
+    { title: 'New Admin Account Created', description: 'A new staff account with elevated privileges was created.', severity: 'MEDIUM', event_type: 'PRIVILEGE_ESCALATION' },
     { title: 'SQL Injection Attempt Blocked', description: 'Malicious SQL payload detected and blocked in login form.', severity: 'CRITICAL', event_type: 'SQL_INJECTION' },
     { title: 'Password Policy Violation', description: 'A weak password was detected during account creation.', severity: 'LOW', event_type: 'POLICY_VIOLATION' },
 ];

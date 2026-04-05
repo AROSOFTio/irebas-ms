@@ -19,7 +19,7 @@ exports.createUser = async (req, res) => {
     const { username, password, first_name, last_name, designation, staff_id, role_id } = req.body;
     try {
         if (req.user.role === 'Manager' && (role_id === 1 || role_id === 2)) {
-            return res.status(403).json({ message: "Managers cannot provision General Manager or Manager roles" });
+            return res.status(403).json({ message: "Managers cannot create General Manager or Manager roles" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,7 +27,7 @@ exports.createUser = async (req, res) => {
             `INSERT INTO users (username, password_hash, first_name, last_name, designation, staff_id, role_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [username, hashedPassword, first_name, last_name, designation, staff_id, role_id || 3] // Default to System Security if missing
         );
-        res.status(201).json({ message: "Staff member provisioned successfully" });
+        res.status(201).json({ message: "Staff member created successfully" });
     } catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({ message: "Username already exists" });
